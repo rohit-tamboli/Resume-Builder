@@ -241,7 +241,7 @@ export default function ResumeBuilderForm() {
           {/* Profile */}
           <section className="bg-white p-4 sm:p-5 rounded-xl border shadow-sm">
             <SectionHeader icon={UserCircleIcon} title="Profile" />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-600 mt-1">
               Start with the essentials. Keep it concise and clear.
             </p>
             <div className="space-y-3 mt-3">
@@ -253,7 +253,7 @@ export default function ResumeBuilderForm() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g., Jane Doe"
+                  placeholder="e.g., Rohit "
                 />
               </div>
 
@@ -265,7 +265,7 @@ export default function ResumeBuilderForm() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g., Senior Product Designer"
+                  placeholder="e.g., Web Developer"
                 />
               </div>
 
