@@ -2,51 +2,16 @@ import React, { useState, useEffect } from "react";
 
 export default function ResumeBuilder() {
   const [template, setTemplate] = useState("simple");
-  const [name, setName] = useState("Jane Doe");
-  const [title, setTitle] = useState("Senior Product Designer");
-  const [contact, setContact] = useState("jane.doe@email.com | (555) 555-5555 | linkedin.com/in/janedoe");
-  const [summary, setSummary] = useState(
-    "Senior Product Designer with 7+ years designing user-centered web and mobile experiences. Strengths include design systems, cross-functional collaboration, user research, and delivering measurable UX improvements."
-  );
+  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
+  const [contact, setContact] = useState("");
+  const [summary, setSummary] = useState("");
 
-  const [experience, setExperience] = useState([
-    {
-      id: 1,
-      role: "Senior Product Designer",
-      company: "Acme Co",
-      dates: "2021 – Present",
-      bullets: [
-        "Led design for a cross-platform product used by 1M+ monthly active users; improved task completion by 18%.",
-        "Owned design system components and documentation to reduce design-engineering rework by 35%.",
-        "Conducted user research and moderated usability tests that informed product roadmap priorities."
-      ]
-    },
-    {
-      id: 2,
-      role: "Product Designer",
-      company: "BrightLabs UI",
-      dates: "2018 – 2021",
-      bullets: [
-        "Designed responsive SaaS interfaces, increasing conversion by 12% through UX improvements.",
-        "Built reusable Figma libraries and collaborated with engineers to deliver polished implementations.",
-        "Performed heuristic reviews and competitor analysis to prioritize feature improvements."
-      ]
-    }
-  ]);
+  const [experience, setExperience] = useState([]);
 
-  const [education, setEducation] = useState([
-    { id: 1, school: "State University", degree: "B.A., Graphic & Interaction Design", dates: "2014 – 2018" }
-  ]);
+  const [education, setEducation] = useState([]);
 
-  const [skills, setSkills] = useState([
-    "Figma",
-    "UX Research",
-    "Design Systems",
-    "Prototyping",
-    "Usability Testing",
-    "HTML/CSS",
-    "Accessibility (WCAG)"
-  ]);
+  const [skills, setSkills] = useState([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("resume_builder_data");
@@ -75,7 +40,7 @@ export default function ResumeBuilder() {
   function addExperience() {
     setExperience((prev) => [
       ...prev,
-      { id: Date.now(), role: "New Role", company: "Company", dates: "YYYY – YYYY", bullets: ["Achievement..."] }
+      { id: Date.now(), role: "", company: "", dates: "", bullets: [""] }
     ]);
   }
 
@@ -89,7 +54,7 @@ export default function ResumeBuilder() {
 
   function addExpBullet(id) {
     setExperience((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, bullets: [...e.bullets, "New bullet..."] } : e))
+      prev.map((e) => (e.id === id ? { ...e, bullets: [...(e.bullets || []), ""] } : e))
     );
   }
 
@@ -112,10 +77,7 @@ export default function ResumeBuilder() {
   }
 
   function addEducation() {
-    setEducation((prev) => [
-      ...prev,
-      { id: Date.now(), school: "New School", degree: "Degree", dates: "YYYY – YYYY" }
-    ]);
+    setEducation((prev) => [...prev, { id: Date.now(), school: "", degree: "", dates: "" }]);
   }
 
   function removeEducation(id) {
@@ -127,7 +89,7 @@ export default function ResumeBuilder() {
   }
 
   function addSkill() {
-    setSkills((prev) => [...prev, "New skill"]);
+    setSkills((prev) => [...prev, ""]);
   }
 
   function updateSkill(idx, value) {
@@ -180,10 +142,10 @@ export default function ResumeBuilder() {
           <section className="bg-white p-3 sm:p-4 rounded shadow-sm">
             <h3 className="font-semibold mb-2">Profile</h3>
             <div className="space-y-2">
-              <input value={name} onChange={(e) => setName(e.target.value)} className="w-full border rounded px-2 py-1 text-sm sm:text-base" />
-              <input value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border rounded px-2 py-1 text-sm sm:text-base" />
-              <input value={contact} onChange={(e) => setContact(e.target.value)} className="w-full border rounded px-2 py-1 text-sm sm:text-base" />
-              <textarea value={summary} onChange={(e) => setSummary(e.target.value)} rows={3} className="w-full border rounded px-2 py-1 text-sm sm:text-base mt-3" />
+              <input placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} className="w-full border rounded px-2 py-1 text-sm sm:text-base" />
+              <input placeholder="Job title" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border rounded px-2 py-1 text-sm sm:text-base" />
+              <input placeholder="Email | Phone | LinkedIn" value={contact} onChange={(e) => setContact(e.target.value)} className="w-full border rounded px-2 py-1 text-sm sm:text-base" />
+              <textarea placeholder="Short professional summary" value={summary} onChange={(e) => setSummary(e.target.value)} rows={3} className="w-full border rounded px-2 py-1 text-sm sm:text-base mt-3" />
             </div>
           </section>
 
@@ -195,14 +157,18 @@ export default function ResumeBuilder() {
             </div>
 
             <div className="space-y-3 mt-3">
+              {experience.length === 0 && (
+                <div className="text-sm text-gray-500">No experience added yet. Click "Add" to create an entry.</div>
+              )}
+
               {experience.map((exp) => (
                 <div key={exp.id} className="border rounded p-3">
                   <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
                     <div className="flex-1 space-y-1">
-                      <input value={exp.role} onChange={(e) => updateExperience(exp.id, "role", e.target.value)} className="w-full border rounded px-2 py-1 text-sm sm:text-base" />
+                      <input placeholder="Role" value={exp.role} onChange={(e) => updateExperience(exp.id, "role", e.target.value)} className="w-full border rounded px-2 py-1 text-sm sm:text-base" />
                       <div className="flex flex-col sm:flex-row gap-2">
-                        <input value={exp.company} onChange={(e) => updateExperience(exp.id, "company", e.target.value)} className="w-full sm:w-1/2 border rounded px-2 py-1 text-sm sm:text-base" />
-                        <input value={exp.dates} onChange={(e) => updateExperience(exp.id, "dates", e.target.value)} className="w-full sm:w-1/2 border rounded px-2 py-1 text-sm sm:text-base" />
+                        <input placeholder="Company" value={exp.company} onChange={(e) => updateExperience(exp.id, "company", e.target.value)} className="w-full sm:w-1/2 border rounded px-2 py-1 text-sm sm:text-base" />
+                        <input placeholder="Dates (e.g. 2021 – Present)" value={exp.dates} onChange={(e) => updateExperience(exp.id, "dates", e.target.value)} className="w-full sm:w-1/2 border rounded px-2 py-1 text-sm sm:text-base" />
                       </div>
                     </div>
 
@@ -213,7 +179,7 @@ export default function ResumeBuilder() {
                     <h4 className="text-sm font-medium">Bullets</h4>
                     {exp.bullets.map((b, i) => (
                       <div key={i} className="flex gap-2">
-                        <input value={b} onChange={(e) => updateExpBullet(exp.id, i, e.target.value)} className="flex-1 border rounded px-2 py-1 text-sm sm:text-base" />
+                        <input placeholder="Achievement or responsibility" value={b} onChange={(e) => updateExpBullet(exp.id, i, e.target.value)} className="flex-1 border rounded px-2 py-1 text-sm sm:text-base" />
                         <button onClick={() => removeExpBullet(exp.id, i)} className="text-red-500">×</button>
                       </div>
                     ))}
@@ -232,14 +198,18 @@ export default function ResumeBuilder() {
             </div>
 
             <div className="space-y-3 mt-3">
+              {education.length === 0 && (
+                <div className="text-sm text-gray-500">No education added yet. Click "Add" to create an entry.</div>
+              )}
+
               {education.map((ed) => (
                 <div key={ed.id} className="border rounded p-3">
                   <div className="flex flex-col sm:flex-row gap-2">
-                    <input value={ed.school} onChange={(e) => updateEducation(ed.id, "school", e.target.value)} className="flex-1 border rounded px-2 py-1 text-sm sm:text-base" />
-                    <input value={ed.dates} onChange={(e) => updateEducation(ed.id, "dates", e.target.value)} className="w-full sm:w-36 border rounded px-2 py-1 text-sm sm:text-base" />
+                    <input placeholder="School" value={ed.school} onChange={(e) => updateEducation(ed.id, "school", e.target.value)} className="flex-1 border rounded px-2 py-1 text-sm sm:text-base" />
+                    <input placeholder="Dates" value={ed.dates} onChange={(e) => updateEducation(ed.id, "dates", e.target.value)} className="w-full sm:w-36 border rounded px-2 py-1 text-sm sm:text-base" />
                   </div>
 
-                  <input value={ed.degree} onChange={(e) => updateEducation(ed.id, "degree", e.target.value)} className="w-full border rounded px-2 py-1 mt-2 text-sm sm:text-base" />
+                  <input placeholder="Degree" value={ed.degree} onChange={(e) => updateEducation(ed.id, "degree", e.target.value)} className="w-full border rounded px-2 py-1 mt-2 text-sm sm:text-base" />
 
                   <button onClick={() => removeEducation(ed.id)} className="text-red-600 text-sm mt-2">Delete</button>
                 </div>
@@ -255,9 +225,11 @@ export default function ResumeBuilder() {
             </div>
 
             <div className="mt-3 grid grid-cols-2 gap-2">
+              {skills.length === 0 && <div className="text-sm text-gray-500 col-span-2">No skills yet. Click "Add" to add skills.</div>}
+
               {skills.map((s, i) => (
                 <div key={i} className="flex items-center gap-2">
-                  <input value={s} onChange={(e) => updateSkill(i, e.target.value)} className="flex-1 border rounded px-2 py-1 text-sm sm:text-base" />
+                  <input placeholder="Skill (e.g. Figma)" value={s} onChange={(e) => updateSkill(i, e.target.value)} className="flex-1 border rounded px-2 py-1 text-sm sm:text-base" />
                   <button onClick={() => removeSkill(i)} className="text-red-600">×</button>
                 </div>
               ))}
@@ -280,28 +252,29 @@ export default function ResumeBuilder() {
 
               <header className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                 <div>
-                  <h1 className="text-xl sm:text-3xl font-bold">{name}</h1>
-                  <div className="text-sm text-gray-600">{title}</div>
+                  <h1 className="text-xl sm:text-3xl font-bold">{name || "Your Name"}</h1>
+                  <div className="text-sm text-gray-600">{title || "Job Title"}</div>
                 </div>
-                <div className="sm:ml-auto text-sm text-gray-600">{contact}</div>
+                <div className="sm:ml-auto text-sm text-gray-600">{contact || "Email | Phone | LinkedIn"}</div>
               </header>
 
               <section className="mt-4">
-                <p className="text-sm">{summary}</p>
+                <p className="text-sm">{summary || "Short professional summary or objective goes here."}</p>
               </section>
 
               <section className="mt-4">
                 <h3 className="font-semibold">Experience</h3>
                 <div className="space-y-3 mt-2">
+                  {experience.length === 0 && <div className="text-sm text-gray-500">No experience to show.</div>}
                   {experience.map((exp) => (
                     <div key={exp.id}>
                       <div className="flex flex-col sm:flex-row sm:justify-between">
                         <div className="font-medium">
-                          {exp.role} — <span className="text-sm text-gray-600">{exp.company}</span>
+                          {exp.role || "Role"} — <span className="text-sm text-gray-600">{exp.company || "Company"}</span>
                         </div>
                         <div className="text-sm text-gray-600">{exp.dates}</div>
                       </div>
-                      <ul className="list-disc list-inside text-sm mt-1">{exp.bullets.map((b, i) => (<li key={i}>{b}</li>))}</ul>
+                      <ul className="list-disc list-inside text-sm mt-1">{(exp.bullets || []).map((b, i) => (<li key={i}>{b || "Achievement..."}</li>))}</ul>
                     </div>
                   ))}
                 </div>
@@ -310,9 +283,10 @@ export default function ResumeBuilder() {
               <section className="mt-4">
                 <h3 className="font-semibold">Education</h3>
                 <div className="space-y-2 mt-2 text-sm">
+                  {education.length === 0 && <div className="text-sm text-gray-500">No education to show.</div>}
                   {education.map((ed) => (
                     <div key={ed.id} className="flex flex-col sm:flex-row sm:justify-between">
-                      <div>{ed.school} — <span className="text-gray-600">{ed.degree}</span></div>
+                      <div>{ed.school || "School"} — <span className="text-gray-600">{ed.degree || "Degree"}</span></div>
                       <div className="text-gray-600">{ed.dates}</div>
                     </div>
                   ))}
@@ -322,7 +296,8 @@ export default function ResumeBuilder() {
               <section className="mt-4">
                 <h3 className="font-semibold">Skills</h3>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {skills.map((s, i) => (<span key={i} className="text-xs px-2 py-1 border rounded">{s}</span>))}
+                  {skills.length === 0 && <div className="text-sm text-gray-500">No skills listed.</div>}
+                  {skills.map((s, i) => (<span key={i} className="text-xs px-2 py-1 border rounded">{s || "Skill"}</span>))}
                 </div>
               </section>
             </div>
@@ -332,40 +307,41 @@ export default function ResumeBuilder() {
 
               <aside className="col-span-1 bg-gray-50 p-4 rounded">
                 <div className="flex flex-col items-center">
-                  <h2 className="font-semibold">{name}</h2>
-                  <div className="text-sm text-gray-600">{title}</div>
+                  <h2 className="font-semibold">{name || "Your Name"}</h2>
+                  <div className="text-sm text-gray-600">{title || "Job Title"}</div>
                 </div>
 
                 <div className="mt-4 text-sm text-gray-700">
                   <h4 className="font-medium">Contact</h4>
-                  <div className="text-xs mt-1">{contact}</div>
+                  <div className="text-xs mt-1">{contact || "Email | Phone | LinkedIn"}</div>
                 </div>
 
                 <div className="mt-4 text-sm text-gray-700">
                   <h4 className="font-medium">Skills</h4>
-                  <div className="mt-2 flex flex-col gap-2">{skills.map((s, i) => (<div key={i} className="text-xs">• {s}</div>))}</div>
+                  <div className="mt-2 flex flex-col gap-2">{skills.map((s, i) => (<div key={i} className="text-xs">• {s || "Skill"}</div>))}</div>
                 </div>
               </aside>
 
               <main className="col-span-2">
                 <section>
                   <h3 className="font-semibold">Summary</h3>
-                  <p className="text-sm text-gray-700 mt-1">{summary}</p>
+                  <p className="text-sm text-gray-700 mt-1">{summary || "Short professional summary or objective goes here."}</p>
                 </section>
 
                 <section className="mt-4">
                   <h3 className="font-semibold">Experience</h3>
                   <div className="space-y-3 mt-2">
+                    {experience.length === 0 && <div className="text-sm text-gray-500">No experience to show.</div>}
                     {experience.map((exp) => (
                       <div key={exp.id}>
                         <div className="flex flex-col sm:flex-row sm:justify-between">
                           <div>
-                            <div className="font-medium">{exp.role}</div>
-                            <div className="text-sm text-gray-500">{exp.company}</div>
+                            <div className="font-medium">{exp.role || "Role"}</div>
+                            <div className="text-sm text-gray-500">{exp.company || "Company"}</div>
                           </div>
                           <div className="text-sm text-gray-500">{exp.dates}</div>
                         </div>
-                        <ul className="list-disc list-inside text-sm mt-1 text-gray-700">{exp.bullets.map((b, i) => (<li key={i}>{b}</li>))}</ul>
+                        <ul className="list-disc list-inside text-sm mt-1 text-gray-700">{(exp.bullets || []).map((b, i) => (<li key={i}>{b || "Achievement..."}</li>))}</ul>
                       </div>
                     ))}
                   </div>
@@ -374,11 +350,12 @@ export default function ResumeBuilder() {
                 <section className="mt-4">
                   <h3 className="font-semibold">Education</h3>
                   <div className="space-y-2 mt-2 text-sm text-gray-700">
+                    {education.length === 0 && <div className="text-sm text-gray-500">No education to show.</div>}
                     {education.map((ed) => (
                       <div key={ed.id}>
-                        <div className="font-medium">{ed.school}</div>
+                        <div className="font-medium">{ed.school || "School"}</div>
                         <div className="text-sm text-gray-500">
-                          {ed.degree} — {ed.dates}
+                          {ed.degree || "Degree"} — {ed.dates}
                         </div>
                       </div>
                     ))}
