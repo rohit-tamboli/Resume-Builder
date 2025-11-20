@@ -517,22 +517,23 @@ export default function ResumeBuilderForm() {
               <header className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 border-b pb-3">
                 <div>
                   <h1 className="text-xl sm:text-3xl font-bold tracking-tight">
-                    {name}
+                    {name || "Your Name"}
                   </h1>
-                  <div className="text-sm text-gray-600">{title}</div>
+                  <div className="text-sm text-gray-600">{title || "Job Title"}</div>
                 </div>
                 <div className="sm:ml-auto text-sm text-gray-600">
-                  {contact}
+                  {contact || "Email | Phone | LinkedIn"}
                 </div>
               </header>
 
               <section className="mt-4">
-                <p className="text-sm leading-6">{summary}</p>
+                <p className="text-sm leading-6">{summary || "Short professional summary or objective goes here."}</p>
               </section>
 
               <section className="mt-4">
                 <h3 className="font-semibold">Experience</h3>
                 <div className="space-y-3 mt-2">
+                  {experience.length === 0 && <div className="text-sm text-gray-500">No experience to show.</div>}
                   {experience.map((exp) => (
                     <div key={exp.id}>
                       <div className="flex flex-col sm:flex-row sm:justify-between">
@@ -557,6 +558,7 @@ export default function ResumeBuilderForm() {
               <section className="mt-4">
                 <h3 className="font-semibold">Education</h3>
                 <div className="space-y-2 mt-2 text-sm">
+                  {education.length === 0 && <div className="text-sm text-gray-500">No education to show.</div>}
                   {education.map((ed) => (
                     <div
                       key={ed.id}
@@ -575,12 +577,13 @@ export default function ResumeBuilderForm() {
               <section className="mt-4">
                 <h3 className="font-semibold">Skills</h3>
                 <div className="mt-2 flex flex-wrap gap-2">
+                  {skills.length === 0 && <div className="text-sm text-gray-500">No skills listed.</div>}
                   {skills.map((s, i) => (
                     <span
                       key={i}
                       className="text-xs px-2 py-1 border rounded bg-slate-50"
                     >
-                      {s}
+                      {s }
                     </span>
                   ))}
                 </div>
