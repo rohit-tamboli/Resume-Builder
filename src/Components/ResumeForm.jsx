@@ -191,45 +191,60 @@ export default function ResumeBuilderForm() {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-8 py-3 flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <SparklesIcon className="h-6 w-6 text-blue-600" />
-            <h2 className="text-lg sm:text-xl font-semibold">Resume Builder</h2>
+            <h2 className="text-lg sm:text-xl font-bold">Resume Builder</h2>
             <span className="hidden sm:inline text-xs text-gray-500">
               Auto-saves to your browser
             </span>
           </div>
 
-          <div className="ml-auto flex flex-wrap items-center gap-2">
+          {/* Controls */}
+          <div className="ml-0 sm:ml-auto flex flex-nowrap justify-end items-center gap-2 overflow-x-auto no-scrollbar py-0 px-1">
+            {/* Template Selector */}
             <select
               value={template}
               onChange={(e) => setTemplate(e.target.value)}
-              className="border rounded-md px-3 py-1.5 text-sm hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-1.5 text-sm rounded-xl bg-white/70 border border-gray-200 
+               backdrop-blur-sm shadow-sm hover:bg-white hover:border-gray-300 
+               transition flex-shrink-0"
             >
               <option value="simple">Simple</option>
               <option value="modern">Modern</option>
             </select>
 
+            {/* Export Button */}
             <button
               onClick={exportPDF}
-              className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-sm transition"
-              title="Export or print your resume"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm text-white 
+               bg-gradient-to-r from-blue-600 to-indigo-600 
+               hover:from-blue-700 hover:to-indigo-700 active:scale-95
+               shadow-md shadow-blue-500/20 transition flex-shrink-0"
             >
               <PrinterIcon className="h-4 w-4" />
-              Export / Print
+              <span className="hidden sm:inline">Export</span>
             </button>
 
+            {/* Save Button */}
             <button
               onClick={() => alert("Saved to localStorage")}
-              className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-gray-900 px-3 py-1.5 rounded text-sm transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm 
+               bg-white/70 border border-gray-200 backdrop-blur-sm 
+               hover:bg-white hover:border-gray-300 active:scale-95
+               shadow-sm transition flex-shrink-0"
             >
               <ArrowPathIcon className="h-4 w-4" />
-              Save
+              <span className="hidden sm:inline">Save</span>
             </button>
 
+            {/* Reset Button */}
             <button
               onClick={resetAll}
-              className="inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded text-sm transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm text-white 
+               bg-gradient-to-r from-red-500 to-rose-600
+               hover:from-red-600 hover:to-rose-700 active:scale-95
+               shadow-md shadow-red-500/20 transition flex-shrink-0"
             >
               <TrashIcon className="h-4 w-4" />
-              Reset
+              <span className="hidden sm:inline">Reset</span>
             </button>
           </div>
         </div>
@@ -456,7 +471,7 @@ export default function ResumeBuilderForm() {
                   onClick={addSkill}
                   className="inline-flex items-center gap-1 text-sm bg-green-600 text-white px-2.5 py-1.5 rounded-md hover:bg-green-700 transition"
                 >
-                  <PlusIcon className="h-4 w-4" />  Add
+                  <PlusIcon className="h-4 w-4" /> Add
                 </button>
               }
             />
@@ -519,7 +534,9 @@ export default function ResumeBuilderForm() {
                   <h1 className="text-xl sm:text-3xl font-bold tracking-tight">
                     {name || "Your Name"}
                   </h1>
-                  <div className="text-sm text-gray-600">{title || "Job Title"}</div>
+                  <div className="text-sm text-gray-600">
+                    {title || "Job Title"}
+                  </div>
                 </div>
                 <div className="sm:ml-auto text-sm text-gray-600">
                   {contact || "Email | Phone | LinkedIn"}
@@ -527,13 +544,20 @@ export default function ResumeBuilderForm() {
               </header>
 
               <section className="mt-4">
-                <p className="text-sm leading-6">{summary || "Short professional summary or objective goes here."}</p>
+                <p className="text-sm leading-6">
+                  {summary ||
+                    "Short professional summary or objective goes here."}
+                </p>
               </section>
 
               <section className="mt-4">
                 <h3 className="font-semibold">Experience</h3>
                 <div className="space-y-3 mt-2">
-                  {experience.length === 0 && <div className="text-sm text-gray-500">No experience to show.</div>}
+                  {experience.length === 0 && (
+                    <div className="text-sm text-gray-500">
+                      No experience to show.
+                    </div>
+                  )}
                   {experience.map((exp) => (
                     <div key={exp.id}>
                       <div className="flex flex-col sm:flex-row sm:justify-between">
@@ -558,7 +582,11 @@ export default function ResumeBuilderForm() {
               <section className="mt-4">
                 <h3 className="font-semibold">Education</h3>
                 <div className="space-y-2 mt-2 text-sm">
-                  {education.length === 0 && <div className="text-sm text-gray-500">No education to show.</div>}
+                  {education.length === 0 && (
+                    <div className="text-sm text-gray-500">
+                      No education to show.
+                    </div>
+                  )}
                   {education.map((ed) => (
                     <div
                       key={ed.id}
@@ -577,13 +605,17 @@ export default function ResumeBuilderForm() {
               <section className="mt-4">
                 <h3 className="font-semibold">Skills</h3>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {skills.length === 0 && <div className="text-sm text-gray-500">No skills listed.</div>}
+                  {skills.length === 0 && (
+                    <div className="text-sm text-gray-500">
+                      No skills listed.
+                    </div>
+                  )}
                   {skills.map((s, i) => (
                     <span
                       key={i}
                       className="text-xs px-2 py-1 border rounded bg-slate-50"
                     >
-                      {s }
+                      {s}
                     </span>
                   ))}
                 </div>
